@@ -6,26 +6,19 @@ package org.wltea.analyzer.test;
 import java.io.IOException;
 import java.io.StringReader;
 
-import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.analysis.TokenStream;
-import org.apache.lucene.analysis.cjk.CJKAnalyzer;
-import org.apache.lucene.analysis.cn.ChineseAnalyzer;
-import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.TermAttribute;
-import org.apache.lucene.util.Version;
-import org.junit.Ignore;
-
 import junit.framework.TestCase;
+
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
 /**
  * @author linliangyi
  *
  */
-@Ignore
 public class StandardAnalyzerTest extends TestCase{
 
-	public static void main(String[] args){
+	public static void main(String[] args) throws Exception{
 		String testString = null;
 		for (int i = 0; i <300; i++) {
 			testString += "18岁那年，有个自称算命先生看了我的手相后说，此生你将注定与男人纠缠不清。我说怎么可能，我不漂亮，也无贪欲。我不想要太多，一生只想爱一次，只要一个爱我的丈夫，然后我是他的好妻子。为他做饭、洗衣带孩子。我要和他相伴到老。 " 
@@ -69,7 +62,7 @@ public class StandardAnalyzerTest extends TestCase{
 		
 		StringReader reader = new StringReader(testString);
 		
-		SmartChineseAnalyzer ss = new SmartChineseAnalyzer(Version.LUCENE_30);	
+		SmartChineseAnalyzer ss = new SmartChineseAnalyzer();	
 		
 		
 		try {
@@ -82,10 +75,11 @@ public class StandardAnalyzerTest extends TestCase{
 		long begin = System.currentTimeMillis();   
 		
 		TokenStream tokenStream = ss.tokenStream("", reader);
+		tokenStream.reset();
 		try {
 			while(tokenStream.incrementToken()){
-//				TermAttribute termAttribute = tokenStream.getAttribute(TermAttribute.class);
-//				System.out.println(termAttribute.toString());
+				CharTermAttribute termAttribute = tokenStream.getAttribute(CharTermAttribute.class);
+				System.out.println(termAttribute.toString());
 				
 			}
 		} catch (IOException e) {

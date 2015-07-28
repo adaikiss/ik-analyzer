@@ -65,10 +65,11 @@ public class Configuration {
 		if(extDictCfg != null){
 			//使用;分割多个扩展字典配置
 			String[] filePaths = extDictCfg.split(";");
-			if(filePaths != null){
+			if(filePaths.length > 0){
 				for(String filePath : filePaths){
-					if(filePath != null && !"".equals(filePath.trim())){
-						extDictFiles.add(filePath.trim());
+					filePath = filePath.trim();
+					if(!"".equals(filePath)){
+						extDictFiles.add(filePath);
 						//System.out.println(filePath.trim());
 					}
 				}
@@ -87,10 +88,11 @@ public class Configuration {
 		if(extStopWordDictCfg != null){
 			//使用;分割多个扩展字典配置
 			String[] filePaths = extStopWordDictCfg.split(";");
-			if(filePaths != null){
+			if(filePaths.length > 0){
 				for(String filePath : filePaths){
-					if(filePath != null && !"".equals(filePath.trim())){
-						extStopWordDictFiles.add(filePath.trim());
+                    filePath = filePath.trim();
+					if(!"".equals(filePath)){
+						extStopWordDictFiles.add(filePath);
 						//System.out.println(filePath.trim());
 					}
 				}

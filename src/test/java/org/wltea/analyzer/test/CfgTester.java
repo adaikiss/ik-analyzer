@@ -5,15 +5,13 @@ package org.wltea.analyzer.test;
 
 import org.wltea.analyzer.cfg.Configuration;
 
-import junit.framework.TestCase;
-
 /**
  * @author Administrator
  *
  */
-public class CfgTester extends TestCase{
+public class CfgTester{
 	
-	public void testCfgLoading(){
+	public static void main(String[] args){
 		System.out.println(Configuration.getExtDictionarys().size());
 		System.out.println(Configuration.getExtStopWordDictionarys().size());
 	}

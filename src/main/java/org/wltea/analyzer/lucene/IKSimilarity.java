@@ -3,7 +3,7 @@
  */
 package org.wltea.analyzer.lucene;
 
-import org.apache.lucene.search.DefaultSimilarity;
+import org.apache.lucene.search.similarities.DefaultSimilarity;
 
 /**
  * IK Analyzer v3.2

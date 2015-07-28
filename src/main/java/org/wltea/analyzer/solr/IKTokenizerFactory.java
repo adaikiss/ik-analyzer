@@ -3,45 +3,37 @@
  */
 package org.wltea.analyzer.solr;
 
-import java.io.Reader;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Tokenizer;
 import org.apache.lucene.analysis.util.TokenizerFactory;
+import org.apache.lucene.util.AttributeFactory;
 import org.wltea.analyzer.lucene.IKTokenizer;
 
-import java.io.IOException;
-import org.apache.lucene.analysis.util.ResourceLoader;
-import org.apache.lucene.analysis.util.ResourceLoaderAware;
-
-
 /**
- * 实现Solr1.4分词器接口 基于IKTokenizer的实现
+ * 实现Solr1.4分词器接口
+ * 基于IKTokenizer的实现
  * 
  * @author 林良益、李良杰
- * 
+ *
  */
-public class IKTokenizerFactory extends TokenizerFactory implements ResourceLoaderAware {
+public final class IKTokenizerFactory extends TokenizerFactory{
+	
+	private boolean isMaxWordLength;
+	
+	/**
+	 * IK分词器Solr TokenizerFactory接口实现类
+	 * 默认最细粒度切分算法
+	 */
+	public IKTokenizerFactory(Map<String,String> args){
+		super(args);
+        isMaxWordLength = getBoolean(args, "isMaxWordLength", false);
+	}
 
-    private boolean isMaxWordLength;
-
-
-    @Override
-    public void init(Map<String, String> args) {
-        super.init(args);
-        assureMatchVersion();
-    }
-
-
-    @Override
-    public Tokenizer create(Reader input) {
-        IKTokenizer ikTokenizer = new IKTokenizer(input, isMaxWordLength);
-        return ikTokenizer;
-    }
-
-
-    public void inform(ResourceLoader loader) throws IOException {
-        isMaxWordLength = getBoolean("isMaxWordLength", true);
-    }
+	@Override
+	public Tokenizer create(AttributeFactory factory) {
+		IKTokenizer ikTokenizer = new IKTokenizer(isMaxWordLength);
+		return ikTokenizer;
+	}
 
 }
