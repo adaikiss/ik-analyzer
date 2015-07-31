@@ -610,7 +610,8 @@ public class QuantifierSegmenter implements ISegmenter {
 	
 	/**
 	 * 识别数字字符类型
-	 * @param input
+	 * @param segmentBuff
+	 * @param context
 	 * @return
 	 */
 	private int nIdentify(char[] segmentBuff , Context context){
@@ -663,9 +664,9 @@ public class QuantifierSegmenter implements ISegmenter {
 		Hit hit = null;
 
 		if(countStart == -1){
-			hit = Dictionary.matchInQuantifierDict(segmentBuff , context.getCursor() , 1);
+			hit = Dictionary.getInstance().matchInQuantifierDict(segmentBuff, context.getCursor(), 1);
 		}else{
-			hit = Dictionary.matchInQuantifierDict(segmentBuff , countStart , context.getCursor() - countStart + 1);
+			hit = Dictionary.getInstance().matchInQuantifierDict(segmentBuff , countStart , context.getCursor() - countStart + 1);
 		}
 		
 		if(hit != null){

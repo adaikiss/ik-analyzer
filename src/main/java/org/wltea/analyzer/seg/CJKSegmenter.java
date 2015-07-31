@@ -51,7 +51,7 @@ public class CJKSegmenter implements ISegmenter {
 				//处理词段队列
 				Hit[] tmpArray = hitList.toArray(new Hit[hitList.size()]);
 				for(Hit hit : tmpArray){
-					hit = Dictionary.matchWithHit(segmentBuff, context.getCursor() , hit);
+					hit = Dictionary.getInstance().matchWithHit(segmentBuff, context.getCursor(), hit);
 					
 					if(hit.isMatch()){//匹配成词
 						//判断是否有不可识别的词段
@@ -84,7 +84,7 @@ public class CJKSegmenter implements ISegmenter {
 			}
 			
 			//处理以input为开始的一个新hit
-			Hit hit = Dictionary.matchInMainDict(segmentBuff, context.getCursor() , 1);
+			Hit hit = Dictionary.getInstance().matchInMainDict(segmentBuff, context.getCursor(), 1);
 			if(hit.isMatch()){//匹配成词
 				//判断是否有不可识别的词段
 				if(context.getCursor() > doneIndex + 1){
@@ -174,10 +174,10 @@ public class CJKSegmenter implements ISegmenter {
 	private void processUnknown(char[] segmentBuff , Context context , int uBegin , int uEnd){
 		Lexeme newLexeme = null;
 		
-		Hit hit = Dictionary.matchInPrepDict(segmentBuff, uBegin, 1);		
+		Hit hit = Dictionary.getInstance().matchInPrepDict(segmentBuff, uBegin, 1);
 		if(hit.isUnmatch()){//不是副词或介词			
 			if(uBegin > 0){//处理姓氏
-				hit = Dictionary.matchInSurnameDict(segmentBuff, uBegin - 1 , 1);
+				hit = Dictionary.getInstance().matchInSurnameDict(segmentBuff, uBegin - 1 , 1);
 				if(hit.isMatch()){
 					//输出姓氏
 					newLexeme = new Lexeme(context.getBuffOffset() , uBegin - 1 , 1 , Lexeme.TYPE_CJK_SN);
@@ -192,11 +192,11 @@ public class CJKSegmenter implements ISegmenter {
 			context.addLexeme(newLexeme);		
 		}
 		
-		hit = Dictionary.matchInPrepDict(segmentBuff, uEnd, 1);
+		hit = Dictionary.getInstance().matchInPrepDict(segmentBuff, uEnd, 1);
 		if(hit.isUnmatch()){//不是副词或介词
 			int length = 1;
 			while(uEnd < context.getAvailable() - length){//处理后缀词
-				hit = Dictionary.matchInSuffixDict(segmentBuff, uEnd + 1 , length);
+				hit = Dictionary.getInstance().matchInSuffixDict(segmentBuff, uEnd + 1 , length);
 				if(hit.isMatch()){
 					//输出后缀
 					newLexeme = new Lexeme(context.getBuffOffset() , uEnd + 1  , length , Lexeme.TYPE_CJK_SF);

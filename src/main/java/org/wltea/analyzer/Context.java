@@ -13,15 +13,15 @@ import org.wltea.analyzer.seg.ISegmenter;
  */
 public class Context{
 	
-	//是否使用最大词长切分（粗粒度）
-	private boolean isMaxWordLength = false;	
+	//是否不使用最大词长切分（粗粒度）
+	private boolean useSmart = false;
     //记录Reader内已分析的字串总长度
     //在分多段分析词元时，该变量累计当前的segmentBuff相对于reader的位移
-	private int buffOffset;	
+	private int buffOffset;
 	//最近一次读入的,可处理的字串长度
 	private int available;
     //最近一次分析的字串长度
-    private int lastAnalyzed;	
+    private int lastAnalyzed;
     //当前缓冲区位置指针
     private int cursor; 
     //字符窜读取缓冲
@@ -36,11 +36,10 @@ public class Context{
      */
 	private IKSortedLinkSet lexemeSet;
 
-    
-    Context(char[] segmentBuff , boolean isMaxWordLength){
-    	this.isMaxWordLength = isMaxWordLength;
+    Context(char[] segmentBuff , boolean useSmart){
+    	this.useSmart = useSmart;
     	this.segmentBuff = segmentBuff;
-    	this.buffLocker = new HashSet<ISegmenter>(4);
+    	this.buffLocker = new HashSet<>(4);
     	this.lexemeSet = new IKSortedLinkSet();
 	}
     
@@ -56,14 +55,14 @@ public class Context{
     	cursor = 0;
     }
 
-	public boolean isMaxWordLength() {
-		return isMaxWordLength;
+	public boolean isUseSmart() {
+		return useSmart;
 	}
 
-	public void setMaxWordLength(boolean isMaxWordLength) {
-		this.isMaxWordLength = isMaxWordLength;
+	public void setUseSmart(boolean useSmart) {
+		this.useSmart = useSmart;
 	}
-    
+
 	public int getBuffOffset() {
 		return buffOffset;
 	}
@@ -140,7 +139,7 @@ public class Context{
 	 * @param lexeme
 	 */
 	public void addLexeme(Lexeme lexeme){
-		if(!Dictionary.isStopWord(segmentBuff , lexeme.getBegin() , lexeme.getLength())){
+		if(!Dictionary.getInstance().isStopWord(segmentBuff, lexeme.getBegin(), lexeme.getLength())){
 			this.lexemeSet.addLexeme(lexeme);
 		}
 	}
